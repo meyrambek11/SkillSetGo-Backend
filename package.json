@@ -1,9 +1,7 @@
 {
   "name": "skill-set-go",
   "version": "0.0.1",
-  "engine": {
-    "node": "16.x"
-  },
+  "engines": { "node": "17.3.0"},
   "description": "",
   "author": "",
   "private": true,
