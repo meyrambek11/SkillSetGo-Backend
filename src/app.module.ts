@@ -12,6 +12,7 @@ import { UsersBasketModule } from './app/users-basket/users-basket.module';
 import { CustomersModule } from './app/customers/customers.module';
 import { TasksModule } from './app/tasks/tasks.module';
 import { ChatsModule } from './app/chats/chats.module';
+import { OrdersModule } from './app/orders/orders.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ChatsModule } from './app/chats/chats.module';
     TasksModule,
     CustomersModule,
     ChatsModule,
+    OrdersModule,
   ],
 })
 export class AppModule {}

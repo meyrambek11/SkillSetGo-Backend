@@ -89,6 +89,13 @@ export class TaskService {
     });
   }
 
+  async getOneWithUser(id: string): Promise<Task> {
+    return await this.taskRepository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+  }
+
   async getAll(query: TaskQuery): Promise<GetAllResponse<Task>> {
     let tasksQuery = this.taskRepository
       .createQueryBuilder('task')

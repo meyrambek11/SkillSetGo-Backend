@@ -8,25 +8,31 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { OrderStatus } from './order-statuses.entity';
+import { User } from 'src/app/users/users.entity';
 
 @Entity('orders')
 export class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Freelancer, (freelancer) => freelancer.orders)
+  @ManyToOne(() => Freelancer, (freelancer) => freelancer.orders, {
+    nullable: false,
+  })
   freelancer: Freelancer;
 
-  @ManyToOne(() => Task, (task) => task.orders)
+  @ManyToOne(() => User, (customer) => customer.orders, { nullable: false })
+  customer: User;
+
+  @ManyToOne(() => Task, (task) => task.orders, { nullable: false })
   task: Task;
 
-  @ManyToOne(() => OrderStatus, (status) => status.orders)
+  @ManyToOne(() => OrderStatus, (status) => status.orders, { nullable: false })
   status: OrderStatus;
 
-  @Column({nullable: false})
+  @Column({ nullable: false })
   price: number;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   letter: string;
 
   @Column({ type: 'timestamp', default: () => 'NOW()' })

@@ -1,16 +1,22 @@
-import { IsNotEmpty, IsNumber, IsObject, IsOptional, IsString } from "class-validator";
-import { Task } from "../tasks/entities/tasks.entity";
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { Task } from '../tasks/entities/tasks.entity';
 
-export class ResponseDto{
-    @IsObject()
-    @IsNotEmpty()
-    task: Task;
+export class ResponseDto {
+  @IsObject()
+  @IsNotEmpty()
+  task: Task;
 
-    @IsNumber()
-    @IsNotEmpty()
-    price: number;
+  @IsNumber()
+  @IsNotEmpty()
+  price: number;
 
-    @IsOptional()
-    @IsString()
-    letter: string;
+  @IsOptional()
+  @IsString()
+  letter: string;
 }

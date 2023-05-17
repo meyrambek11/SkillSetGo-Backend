@@ -7,15 +7,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Order } from './entities/orders.entity';
 import { OrderStatus } from './entities/order-statuses.entity';
 import { FreelancersModule } from '../freelancers/freelancers.module';
+import { TasksModule } from '../tasks/tasks.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([
-      Order,
-      OrderStatus
-    ]),
-    FreelancersModule
+    TypeOrmModule.forFeature([Order, OrderStatus]),
+    FreelancersModule,
+    TasksModule,
   ],
   controllers: [OrderController],
   providers: [OrderService, OrderStatusService],

@@ -76,9 +76,9 @@ export class ReferencesService {
       relations: ['specializations'],
     });
 
-    for(let category of categories){
-      for(let specialization of category.specializations){
-        specialization['value'] = specialization.id
+    for (const category of categories) {
+      for (const specialization of category.specializations) {
+        specialization['value'] = specialization.id;
       }
     }
 
@@ -92,8 +92,8 @@ export class ReferencesService {
       where: { category: { id: categoryId } },
     });
 
-    for(let specialization of specializations){
-      specialization['value'] = specialization.id
+    for (const specialization of specializations) {
+      specialization['value'] = specialization.id;
     }
 
     return specializations;

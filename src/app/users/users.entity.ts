@@ -16,6 +16,7 @@ import { Freelancer } from '../freelancers/entities/freelancers.entity';
 import { Task } from '../tasks/entities/tasks.entity';
 import { UserBasket } from '../users-basket/entities/users-basket.entity';
 import { Event } from '../chats/chats.entity';
+import { Order } from '../orders/entities/orders.entity';
 
 @Entity('users')
 export class User {
@@ -76,6 +77,9 @@ export class User {
 
   @OneToMany(() => Task, (task) => task.user)
   tasks: Task[];
+
+  @OneToMany(() => Order, (order) => order.customer)
+  orders: Order[];
 
   @Column({ type: 'timestamp', default: () => 'NOW()' })
   created_at: Date;
