@@ -7,7 +7,7 @@ export class Specialization {
   id: string;
 
   @Column({ nullable: false })
-  name: string;
+  label: string;
 
   @ManyToOne(
     () => SpecializationCategory,
