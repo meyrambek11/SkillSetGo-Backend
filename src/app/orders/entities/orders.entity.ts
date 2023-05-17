@@ -23,6 +23,12 @@ export class Order {
   @ManyToOne(() => OrderStatus, (status) => status.orders)
   status: OrderStatus;
 
+  @Column({nullable: false})
+  price: number;
+
+  @Column({nullable: true})
+  letter: string;
+
   @Column({ type: 'timestamp', default: () => 'NOW()' })
   created_at: Date;
 

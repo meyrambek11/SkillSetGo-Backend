@@ -72,17 +72,31 @@ export class ReferencesService {
   }
 
   async getAllSpecializationCategories(): Promise<SpecializationCategory[]> {
-    return await this.specializationCategoryRepository.find({
+    const categories = await this.specializationCategoryRepository.find({
       relations: ['specializations'],
     });
+
+    for(let category of categories){
+      for(let specialization of category.specializations){
+        specialization['value'] = specialization.id
+      }
+    }
+
+    return categories;
   }
 
   async getSpecializationsByCategory(
     categoryId: string,
   ): Promise<Specialization[]> {
-    return await this.specializationRepository.find({
+    const specializations = await this.specializationRepository.find({
       where: { category: { id: categoryId } },
     });
+
+    for(let specialization of specializations){
+      specialization['value'] = specialization.id
+    }
+
+    return specializations;
   }
 
   async getAvailabilityStatusByCode(
