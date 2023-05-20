@@ -6,6 +6,7 @@ export enum OrderStatusCodes {
   ACTIVE = 'active',
   COMPLITED = 'complited',
   REJECT = 'reject',
+  REVIEW = 'review',
 }
 
 @Entity('order_status')

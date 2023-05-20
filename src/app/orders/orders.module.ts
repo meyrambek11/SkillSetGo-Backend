@@ -8,6 +8,7 @@ import { Order } from './entities/orders.entity';
 import { OrderStatus } from './entities/order-statuses.entity';
 import { FreelancersModule } from '../freelancers/freelancers.module';
 import { TasksModule } from '../tasks/tasks.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { TasksModule } from '../tasks/tasks.module';
     TypeOrmModule.forFeature([Order, OrderStatus]),
     FreelancersModule,
     TasksModule,
+    UsersModule,
   ],
   controllers: [OrderController],
   providers: [OrderService, OrderStatusService],

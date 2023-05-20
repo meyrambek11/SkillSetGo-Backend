@@ -89,6 +89,16 @@ export class TaskService {
     });
   }
 
+  async changeStatusToAppoint(id: string): Promise<void> {
+    const status = await this.taskStatusService.getOneByCode(
+      TaskStatusCodes.APPOINTED,
+    );
+
+    await this.taskRepository.update(id, {
+      status,
+    });
+  }
+
   async getOneWithUser(id: string): Promise<Task> {
     return await this.taskRepository.findOne({
       where: { id },

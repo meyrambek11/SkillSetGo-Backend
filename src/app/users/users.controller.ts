@@ -41,7 +41,7 @@ export class UsersController {
     @UserInfo() user: UserMetadata,
     @Body('balance') balance: number,
   ): Promise<{ success: boolean }> {
-    return this.usersService.increaseBalance(user, balance);
+    return this.usersService.increaseBalance(user.id, balance);
   }
 
   @Delete()

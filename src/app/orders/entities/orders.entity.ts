@@ -35,6 +35,9 @@ export class Order {
   @Column({ nullable: true })
   letter: string;
 
+  @Column('text', { array: true, nullable: true })
+  files: string[];
+
   @Column({ type: 'timestamp', default: () => 'NOW()' })
   created_at: Date;
 

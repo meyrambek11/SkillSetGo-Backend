@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -19,4 +20,10 @@ export class ResponseDto {
   @IsOptional()
   @IsString()
   letter: string;
+}
+
+export class ReviewDto {
+  @IsArray()
+  @IsNotEmpty()
+  files: string[];
 }

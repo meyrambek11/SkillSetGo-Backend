@@ -18,4 +18,8 @@ export class OrderStatusService {
       where: { code },
     });
   }
+
+  async getAll(): Promise<OrderStatus[]> {
+    return await this.orderStatusRepository.find();
+  }
 }
