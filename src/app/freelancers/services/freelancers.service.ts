@@ -40,6 +40,7 @@ export class FreelancerService {
 
   async getAll(
     query: GetAllFreelancerQuery,
+    user: UserMetadata,
   ): Promise<GetAllResponse<Freelancer>> {
     let freelancersQuery = this.freelancerRepository
       .createQueryBuilder('freelancer')
@@ -49,7 +50,9 @@ export class FreelancerService {
       .leftJoinAndSelect('user.city', 'city')
       .leftJoinAndSelect('freelancer.availabilityStatus', 'availabilityStatus')
       .leftJoinAndSelect('freelancer.specializations', 'specializations')
-      .leftJoinAndSelect('specializations.category', 'specializationCategory');
+      .leftJoinAndSelect('specializations.category', 'specializationCategory')
+      .leftJoinAndSelect('freelancer.baskets', 'baskets')
+      .leftJoinAndSelect('baskets.user', 'likedUser');
 
     freelancersQuery = this.filteringReceivedData(freelancersQuery, query);
     freelancersQuery = this.searchingReceivedData(
@@ -58,6 +61,18 @@ export class FreelancerService {
     );
 
     const freelancers = await freelancersQuery.getMany();
+
+    for (const freelancer of freelancers) {
+      freelancer['isLike'] = false;
+      for (const basket of freelancer.baskets) {
+        if (basket.user.id === user.id) {
+          freelancer['isLike'] = true;
+          break;
+        }
+      }
+      delete freelancer.baskets;
+    }
+
     return {
       data: freelancers,
       meta: {

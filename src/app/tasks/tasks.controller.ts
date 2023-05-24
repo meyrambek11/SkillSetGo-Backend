@@ -57,8 +57,11 @@ export class TaskController {
   }
 
   @Get()
-  getAll(@Query() query: TaskQuery): Promise<GetAllResponse<Task>> {
-    return this.taskService.getAll(query);
+  getAll(
+    @Query() query: TaskQuery,
+    @UserInfo() user: UserMetadata,
+  ): Promise<GetAllResponse<Task>> {
+    return this.taskService.getAll(query, user);
   }
 
   @Delete('/:id')

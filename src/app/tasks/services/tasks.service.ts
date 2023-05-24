@@ -106,7 +106,10 @@ export class TaskService {
     });
   }
 
-  async getAll(query: TaskQuery): Promise<GetAllResponse<Task>> {
+  async getAll(
+    query: TaskQuery,
+    user: UserMetadata,
+  ): Promise<GetAllResponse<Task>> {
     let tasksQuery = this.taskRepository
       .createQueryBuilder('task')
       .orderBy('task.created_at', 'ASC')
@@ -117,12 +120,25 @@ export class TaskService {
       .leftJoinAndSelect('task.currency', 'currency')
       .leftJoinAndSelect('task.specializations', 'specializations')
       .leftJoinAndSelect('specializations.category', 'specializationCategory')
+      .leftJoinAndSelect('task.baskets', 'baskets')
+      .leftJoinAndSelect('baskets.user', 'likedUser')
       .where('status.code = :status', { status: TaskStatusCodes.NEW });
 
     tasksQuery = this.filteringReceivedData(tasksQuery, query);
     tasksQuery = this.searchingReceivedData(tasksQuery, query.keyword);
 
     const tasks = await tasksQuery.getMany();
+
+    for (const task of tasks) {
+      task['isLike'] = false;
+      for (const basket of task.baskets) {
+        if (basket.user.id === user.id) {
+          task['isLike'] = true;
+          break;
+        }
+      }
+      delete task.baskets;
+    }
 
     return {
       data: tasks,

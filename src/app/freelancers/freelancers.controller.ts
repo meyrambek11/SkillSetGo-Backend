@@ -56,8 +56,9 @@ export class FreelancerController {
   @Get()
   getAll(
     @Query() query: GetAllFreelancerQuery,
+    @UserInfo() user: UserMetadata,
   ): Promise<GetAllResponse<Freelancer>> {
-    return this.freelancerService.getAll(query);
+    return this.freelancerService.getAll(query, user);
   }
 
   @Get('/:id')
