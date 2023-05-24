@@ -21,8 +21,6 @@ async function bootstap(): Promise<void> {
     app.useGlobalInterceptors(new TransformInterceptor());
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
-    console.log()
-
     await app.listen(PORT, () =>
       console.log(`Server started on port = ${PORT}`),
     );

@@ -8,7 +8,6 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ChatService } from './chats.service';
-import { EventTypes } from './chats.entity';
 
 @WebSocketGateway({
   cors: {
@@ -28,10 +27,11 @@ export class ChatGateway
   }
 
   @SubscribeMessage('join')
-  handleJoin(client: Socket, userId: string) {
-    console.log(`User ${userId} joined`);
-    this.users[userId] = client.id;
-    console.log(this.users);
+  handleJoin(client: Socket, payload: { userId: string }) {
+    console.log(
+      `User with id: ${payload.userId} joined, clientId: ${client.id}`,
+    );
+    this.users[payload.userId] = client.id;
   }
 
   @SubscribeMessage('message')
@@ -45,27 +45,21 @@ export class ChatGateway
 
     //save to db
     const message = await this.chatService.store({
-      type: EventTypes.message,
       fromUser: { id: fromUserId },
       toUser: { id: payload.toUserId },
-      value: payload,
+      message: payload.message,
     });
 
     client.emit('message', message);
 
-    const toClient = this.users[`${payload.toUserId}`];
+    const toClientId = this.users[`${payload.toUserId}`];
 
-    if (!toClient) {
+    if (!toClientId) {
       console.log(`User ${payload.toUserId} is not online`);
       return;
     }
-    console.log(
-      `Sending message from ${fromUserId} to ${payload.toUserId}: ${payload.message}`,
-    );
 
-    this.server.to(toClient).emit('message', message);
-
-    //
+    this.server.to(toClientId).emit('message', message);
   }
 
   handleConnection(client: Socket) {

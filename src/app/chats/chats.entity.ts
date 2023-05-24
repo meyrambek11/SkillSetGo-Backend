@@ -7,12 +7,6 @@ import {
 } from 'typeorm';
 import { User } from '../users/users.entity';
 
-export enum EventTypes {
-  message = 'message',
-  response = 'response',
-  changeStatus = 'changeStatus',
-}
-
 @Entity('events')
 export class Event {
   @PrimaryGeneratedColumn('uuid')
@@ -25,10 +19,7 @@ export class Event {
   toUser: User;
 
   @Column({ nullable: false })
-  type: EventTypes;
-
-  @Column({ nullable: true, type: 'jsonb' })
-  value: object | object[];
+  message: string;
 
   @Column({ type: 'timestamp', default: () => 'NOW()' })
   created_at: Date;

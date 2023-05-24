@@ -22,4 +22,36 @@ export class ChatService {
       relations: ['fromUser', 'toUser'],
     });
   }
+
+  async getMessages(ownerId: string, companionId: string): Promise<Event[]> {
+    const eventsQuery = this.eventRepository
+      .createQueryBuilder('event')
+      .orderBy('event.created_at', 'ASC')
+      .leftJoinAndSelect('event.toUser', 'toUser')
+      .leftJoinAndSelect('event.fromUser', 'fromUser')
+      .where('(toUser.id = :ownerId AND fromUser.id = :companionId)', {
+        ownerId,
+        companionId,
+      })
+      .orWhere('(toUser.id = :companionId AND fromUser.id = :ownerId)', {
+        companionId,
+        ownerId,
+      });
+
+    return await eventsQuery.getMany();
+  }
+
+  async deleteMessage(
+    id: string,
+    userId: string,
+  ): Promise<{ success: boolean }> {
+    const event = await this.eventRepository.findOne({
+      where: { id, fromUser: { id: userId } },
+    });
+
+    if (!event) return { success: false };
+
+    await this.eventRepository.softDelete(id);
+    return { success: true };
+  }
 }
