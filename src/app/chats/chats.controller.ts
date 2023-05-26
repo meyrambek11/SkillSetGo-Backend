@@ -18,10 +18,10 @@ import { UserMetadata } from 'src/common/types/userMetadata';
 export class ChatController {
   constructor(private chatService: ChatService) {}
 
-  @Get()
+  @Get('/:companionId')
   getMessage(
     @UserInfo() user: UserMetadata,
-    @Body('companionId') companionId: string,
+    @Param('companionId', ParseUUIDPipe) companionId: string,
   ): Promise<Event[]> {
     return this.chatService.getMessages(user.id, companionId);
   }
