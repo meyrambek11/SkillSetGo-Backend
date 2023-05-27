@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -18,10 +19,10 @@ import { UserMetadata } from 'src/common/types/userMetadata';
 export class ChatController {
   constructor(private chatService: ChatService) {}
 
-  @Get('/:companionId')
+  @Get()
   getMessage(
     @UserInfo() user: UserMetadata,
-    @Param('companionId', ParseUUIDPipe) companionId: string,
+    @Query('companionId') companionId: string,
   ): Promise<Event[]> {
     return this.chatService.getMessages(user.id, companionId);
   }
