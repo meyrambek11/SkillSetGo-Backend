@@ -36,7 +36,9 @@ export class UsersService {
   }
 
   async getAll(): Promise<User[]>{
-    return await this.userRepository.find()
+    return await this.userRepository.find({
+      relations: ['role', 'country', 'city']
+    })
   }
 
   async update(user: UserMetadata, payload: UpdateUserDto): Promise<User> {
