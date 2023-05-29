@@ -32,8 +32,8 @@ export class Task {
   @Column({ nullable: true })
   description: string;
 
-  @Column({ type: 'timestamp', nullable: false })
-  deadline: Date;
+  @Column({ nullable: true })
+  deadline: string;
 
   @Column({ nullable: false })
   price: number;

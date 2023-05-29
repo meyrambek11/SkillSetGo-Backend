@@ -28,6 +28,11 @@ export class UsersController {
     return this.usersService.getAccount(user);
   }
 
+  @Get()
+  getAll(): Promise<User[]>{
+    return this.usersService.getAll();
+  }
+
   @Patch()
   update(
     @UserInfo() user: UserMetadata,

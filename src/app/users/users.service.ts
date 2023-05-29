@@ -35,6 +35,10 @@ export class UsersService {
     return user;
   }
 
+  async getAll(): Promise<User[]>{
+    return await this.userRepository.find()
+  }
+
   async update(user: UserMetadata, payload: UpdateUserDto): Promise<User> {
     const userAccount = await this.userRepository.findOne({
       where: { id: user.id },

@@ -21,6 +21,12 @@ export class FreelancerEducationService {
     const freelancer = await this.freelancerService.getOneByUserWithRelations(
       user.id,
     );
+
+    if(!freelancer)
+      throw new HttpException(
+        `Freelancer with user id: ${user.id} does not exist`,
+        HttpStatus.BAD_REQUEST,
+      );
     return await this.freelancerEducationRepository.save({
       freelancer,
       ...payload,

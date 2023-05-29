@@ -18,7 +18,7 @@ export class StoreTaskDto {
   @IsString()
   description?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   deadline: string;
 
