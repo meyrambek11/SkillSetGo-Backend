@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   UseGuards,
@@ -15,6 +17,7 @@ import { UpdateUserDto } from './users.dto';
 import { User } from './users.entity';
 import { Freelancer } from '../freelancers/entities/freelancers.entity';
 import { DeleteResult } from 'typeorm';
+import AdministrationGuard from '../admin/admin.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')
@@ -29,7 +32,8 @@ export class UsersController {
   }
 
   @Get()
-  getAll(): Promise<User[]>{
+  @UseGuards(AdministrationGuard())
+  getAll(): Promise<User[]> {
     return this.usersService.getAll();
   }
 
@@ -47,6 +51,22 @@ export class UsersController {
     @Body('balance') balance: number,
   ): Promise<{ success: boolean }> {
     return this.usersService.increaseBalance(user.id, balance);
+  }
+
+  @Post('block/:userId')
+  @UseGuards(AdministrationGuard())
+  blockUser(
+    @Param('userId', ParseUUIDPipe) userId: string,
+  ): Promise<{ success: boolean }> {
+    return this.usersService.blockUser(userId);
+  }
+
+  @Post('unlock/:userId')
+  @UseGuards(AdministrationGuard())
+  unlockUser(
+    @Param('userId', ParseUUIDPipe) userId: string,
+  ): Promise<{ success: boolean }> {
+    return this.usersService.unlockUser(userId);
   }
 
   @Delete()

@@ -12,7 +12,6 @@ import { AuthInterface } from './auth.type';
 import { StoreUserDto } from '../users/users.dto';
 import { User } from '../users/users.entity';
 import { RolesService } from '../roles/roles.service';
-import { FreelancerService } from '../freelancers/services/freelancers.service';
 
 @Injectable()
 export class AuthService {
@@ -20,11 +19,16 @@ export class AuthService {
     private userService: UsersService,
     private jwtService: JwtService,
     private rolesService: RolesService,
-    private freelancersService: FreelancerService,
   ) {}
 
   async login(payload: LoginDto): Promise<AuthInterface> {
     const user = await this.validate(payload);
+    if (user.isBan)
+      throw new HttpException(
+        'Пользователь заблокирован',
+        HttpStatus.FORBIDDEN,
+      );
+
     const accessToken = this.generateToken(user);
     return {
       user,

@@ -35,10 +35,10 @@ export class UsersService {
     return user;
   }
 
-  async getAll(): Promise<User[]>{
+  async getAll(): Promise<User[]> {
     return await this.userRepository.find({
-      relations: ['role', 'country', 'city']
-    })
+      relations: ['role', 'country', 'city'],
+    });
   }
 
   async update(user: UserMetadata, payload: UpdateUserDto): Promise<User> {
@@ -157,6 +157,22 @@ export class UsersService {
     return await this.userRepository.findOne({
       where: { role: { code: RoleCodes.ADMIN } },
     });
+  }
+
+  async blockUser(userId: string): Promise<{ success: boolean }> {
+    await this.userRepository.save({
+      id: userId,
+      isBan: true,
+    });
+    return { success: true };
+  }
+
+  async unlockUser(userId: string): Promise<{ success: boolean }> {
+    await this.userRepository.save({
+      id: userId,
+      isBan: false,
+    });
+    return { success: true };
   }
 
   async decreaseBalance(

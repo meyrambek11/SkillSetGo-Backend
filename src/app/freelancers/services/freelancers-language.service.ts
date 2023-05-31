@@ -22,7 +22,7 @@ export class FreelancerLanguageService {
       user.id,
     );
 
-    if(!freelancer)
+    if (!freelancer)
       throw new HttpException(
         `Freelancer with user id: ${user.id} does not exist`,
         HttpStatus.BAD_REQUEST,
